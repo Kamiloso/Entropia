@@ -1,4 +1,3 @@
-#nullable disable
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]

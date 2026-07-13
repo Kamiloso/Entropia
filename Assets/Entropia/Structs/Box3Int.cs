@@ -49,18 +49,47 @@ public readonly record struct Box3Int
             pos.z >= Min.z && pos.z <= Max.z;
     }
 
-    public void Iterate(Action<Vec3Int> action)
-    {
-        for (int x = Min.x; x <= Max.x; x++)
-            for (int y = Min.y; y <= Max.y; y++)
-                for (int z = Min.z; z <= Max.z; z++)
-                {
-                    action(new Vec3Int(x, y, z));
-                }
-    }
-
     public override string ToString()
     {
         return $"[min: {Min}, max: {Max}]";
+    }
+
+    public Enumerator GetEnumerator() => new(this);
+
+    public struct Enumerator
+    {
+        private readonly Box3Int _box;
+        private int _x, _y, _z;
+        private bool _started;
+
+        public Enumerator(Box3Int box)
+        {
+            _box = box;
+            _x = box.Min.x;
+            _y = box.Min.y;
+            _z = box.Min.z;
+            _started = false;
+        }
+
+        public readonly Vec3Int Current => new(_x, _y, _z);
+
+        public bool MoveNext()
+        {
+            if (!_started)
+            {
+                _started = true;
+                return _x <= _box.Max.x && _y <= _box.Max.y && _z <= _box.Max.z;
+            }
+
+            if (_z < _box.Max.z) { _z++; return true; }
+            _z = _box.Min.z;
+
+            if (_y < _box.Max.y) { _y++; return true; }
+            _y = _box.Min.y;
+
+            if (_x < _box.Max.x) { _x++; return true; }
+
+            return false;
+        }
     }
 }

@@ -1,4 +1,3 @@
-#nullable disable
 using System.Collections.Generic;
 using Entropia;
 using Entropia.Structs;
@@ -38,11 +37,11 @@ public class SpaceDustManager : MonoBehaviour
         {
             recycled.transform.position = targetPosition;
             recycled.SetActive(true);
-            _instances.Add(sector.SectorIndex, recycled);
+            _instances.Add(sector.Index, recycled);
         }
         else
         {
-            _instances.Add(sector.SectorIndex, Instantiate(
+            _instances.Add(sector.Index, Instantiate(
                 original: dustPrefab,
                 position: targetPosition,
                 rotation: Quaternion.identity,
@@ -53,11 +52,11 @@ public class SpaceDustManager : MonoBehaviour
 
     private void HandleSectorUnload(Sector3 sector)
     {
-        if (_instances.TryGetValue(sector.SectorIndex, out GameObject instance))
+        if (_instances.TryGetValue(sector.Index, out GameObject instance))
         {
             instance.SetActive(false);
             _instancePool.Push(instance);
-            _instances.Remove(sector.SectorIndex);
+            _instances.Remove(sector.Index);
         }
     }
 }

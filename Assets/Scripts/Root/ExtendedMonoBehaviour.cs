@@ -1,46 +1,15 @@
-#nullable disable
-using Entropia.Root;
-using System;
+using Entropia.Root.Lifetime;
+using Entropia.Root.Environment;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public abstract class ExtendedMonoBehaviour : MonoBehaviour
 {
-    private static ServiceLocator _services = new();
-    private static bool _registered = false;
+    protected T Self<T>() where T : Component =>
+        GetComponent<T>();
 
-    protected static T Ref<T>()
-    {
-        PrepareServices();
+    protected static T Mono<T>() where T : MonoBehaviour, IUnitySingleton =>
+        UnitySingletons.Get<T>();
 
-        return _services.Get<T>();
-    }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void Initialize()
-    {
-        SceneManager.sceneUnloaded += _ => ResetServices();
-    }
-
-    private static void PrepareServices()
-    {
-        if (_registered) return;
-        _registered = true;
-
-        _services.RegisterBaseModels();
-
-        switch (SceneManager.GetActiveScene().path)
-        {
-            case "Assets/Scenes/Game.unity": _services.RegisterGameModels(); break;
-            case "Assets/Scenes/Menu.unity": _services.RegisterMenuModels(); break;
-            default: throw new NotImplementedException();
-        }
-    }
-
-    private static void ResetServices()
-    {
-        _services.Dispose();
-        _services = new ServiceLocator();
-        _registered = true;
-    }
+    protected static T Ref<T>() where T : notnull =>
+        UnitySingletons.Get<EnvironmentManager>().GetService<T>();
 }

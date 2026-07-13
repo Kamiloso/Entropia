@@ -1,4 +1,3 @@
-#nullable disable
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour

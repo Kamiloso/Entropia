@@ -1,4 +1,3 @@
-#nullable disable
 using UnityEngine.InputSystem;
 
 public static class MyInput

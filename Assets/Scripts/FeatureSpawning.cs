@@ -1,27 +1,27 @@
-#nullable disable
 using Entropia;
 using Entropia.Structs;
 using Entropia.Worldgen;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class FeatureSpawning : ExtendedMonoBehaviour
 {
-    private const int EXP = 4; // TODO: move somewhere else
-
     [SerializeField] Transform camera;
     [SerializeField] GameObject featurePrefab;
     [SerializeField] long range;
 
-    private IWorldgen _worldgen;
+    private readonly Dictionary<Vec3Int, List<GameObject>> _featureSectors = new();
 
     private SectorSpy _sectorSpy;
+
+    private IWorldgen _worldgen;
 
     private void Awake()
     {
         _worldgen = Ref<IWorldgen>();
 
-        _sectorSpy = new SectorSpy(EXP, range);
+        _sectorSpy = _worldgen.MakeSectorSpy(range);
         _sectorSpy.OnLoad += LoadSector;
         _sectorSpy.OnUnload += UnloadSector;
     }
@@ -37,18 +37,20 @@ public class FeatureSpawning : ExtendedMonoBehaviour
     {
         WorldSector worldSector = _worldgen.GenerateSector(sector);
 
-        if (worldSector.Features.Count() > 0)
-        {
-            Instantiate(
+        List<GameObject> instances = worldSector.Features
+            .Select(f => Instantiate(
                 original: featurePrefab,
                 position: sector.Center().ToVector3(),
-                rotation: Quaternion.identity
-            );
-        }
+                rotation: Quaternion.identity))
+            .ToList();
+
+        _featureSectors.Add(sector.Index, instances);
     }
 
     private void UnloadSector(Sector3 sector)
     {
+        _featureSectors.Remove(sector.Index, out var instances);
 
+        instances.ForEach(Destroy);
     }
 }

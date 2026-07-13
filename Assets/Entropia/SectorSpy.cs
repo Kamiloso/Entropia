@@ -37,7 +37,7 @@ public sealed class SectorSpy
     public void UpdatePosition(Vec3 position)
     {
         Sector3 sector = new(Exponent, position);
-        Vec3Int sectorIndex = sector.SectorIndex;
+        Vec3Int sectorIndex = sector.Index;
 
         if (_sectorIndex == sectorIndex) return;
 
@@ -47,8 +47,10 @@ public sealed class SectorSpy
         _createList.Clear();
         _removeList.Clear();
 
-        Box3Int nearbyIndexBox = new(sectorIndex, Range);
-        nearbyIndexBox.Iterate(_nearbyList.Add);
+        foreach (Vec3Int pos in new Box3Int(sectorIndex, Range))
+        {
+            _nearbyList.Add(pos);
+        }
 
         _removeList.AddRange(_loadedSectorIndexes.Except(_nearbyList));
 

@@ -1,4 +1,5 @@
 #nullable enable
+
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +14,7 @@ public sealed class ServiceLocator : IDisposable
     public void Register<T>(T service) where T : notnull
     {
         if (_registry.ContainsKey(typeof(T)))
-            throw new ArgumentException($"Type {typeof(T)} has already been registered");
+            throw new InvalidOperationException($"Type {typeof(T)} has already been registered");
 
         _registry.Add(typeof(T), service);
     }
@@ -21,7 +22,7 @@ public sealed class ServiceLocator : IDisposable
     public T Get<T>() where T : notnull
     {
         if (!_registry.TryGetValue(typeof(T), out var retrieved))
-            throw new ArgumentException($"Cannot find type {typeof(T)}");
+            throw new KeyNotFoundException($"Cannot find type {typeof(T)}");
 
         return (T)retrieved;
     }

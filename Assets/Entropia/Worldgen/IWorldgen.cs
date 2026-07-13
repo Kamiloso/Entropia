@@ -1,10 +1,10 @@
 #nullable enable
 using Entropia.Structs;
-using System.Collections.Generic;
 
 namespace Entropia.Worldgen;
 
 public interface IWorldgen
 {
+    SectorSpy MakeSectorSpy(long range);
     WorldSector GenerateSector(Sector3 sector);
 }

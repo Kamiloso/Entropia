@@ -1,5 +1,3 @@
-#nullable disable
-
 using Entropia.Structs;
 using UnityEngine;
 
