@@ -6,7 +6,7 @@ using Entropia.Structs;
 
 namespace Entropia;
 
-public sealed class SectorSpy
+public class SectorSpy
 {
     public int Exponent { get; }
     public long Range { get; }

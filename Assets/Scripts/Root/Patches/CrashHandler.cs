@@ -6,10 +6,8 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Entropia.Root.Lifetime;
-
 [Preserve]
-public class CrashHandler : MonoBehaviour, ICrashHandlerUnitySingleton
+public class CrashHandler : MonoBehaviour, INoExceptUnitySingleton
 {
     private static bool _isEditor;
     private static string _crashLogPath;

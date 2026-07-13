@@ -26,14 +26,14 @@ public readonly record struct Vec3(double x, double y, double z)
         return $"({xs}, {ys}, {zs})";
     }
 
-    public static Vec3 Zero => new(0, 0, 0);
-    public static Vec3 One => new(1, 1, 1);
-    public static Vec3 Up => new(0, 1, 0);
-    public static Vec3 Down => new(0, -1, 0);
-    public static Vec3 Left => new(-1, 0, 0);
-    public static Vec3 Right => new(1, 0, 0);
-    public static Vec3 Forward => new(0, 0, 1);
-    public static Vec3 Back => new(0, 0, -1);
+    public static readonly Vec3 Zero = new(0, 0, 0);
+    public static readonly Vec3 One = new(1, 1, 1);
+    public static readonly Vec3 Up = new(0, 1, 0);
+    public static readonly Vec3 Down = new(0, -1, 0);
+    public static readonly Vec3 Left = new(-1, 0, 0);
+    public static readonly Vec3 Right = new(1, 0, 0);
+    public static readonly Vec3 Forward = new(0, 0, 1);
+    public static readonly Vec3 Back = new(0, 0, -1);
 
     public static Vec3 MinCorner(Vec3 a, Vec3 b) => new(Math.Min(a.x, b.x), Math.Min(a.y, b.y), Math.Min(a.z, b.z));
     public static Vec3 MaxCorner(Vec3 a, Vec3 b) => new(Math.Max(a.x, b.x), Math.Max(a.y, b.y), Math.Max(a.z, b.z));

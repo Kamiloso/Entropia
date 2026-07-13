@@ -6,17 +6,25 @@ namespace Entropia.Worldgen;
 
 public abstract class WorldFeature
 {
-    public abstract Vec3 Position { get; }
-}
+    public Vec3 Position { get; }
+    public Vec3 Rotation { get; }
 
-internal sealed class Asteroid : WorldFeature
-{
-    public override Vec3 Position { get; }
-    public double Size { get; }
+    public string PrefabName => GetType().Name;
 
-    public Asteroid(Vec3 position, double size)
+    protected WorldFeature(Vec3 position, Vec3 rotation)
     {
         Position = position;
+        Rotation = rotation;
+    }
+}
+
+public sealed class Asteroid : WorldFeature
+{
+    public float Size { get; }
+
+    public Asteroid(Vec3 position, Vec3 rotation, float size)
+        : base(position, rotation)
+    {
         Size = size;
     }
 }

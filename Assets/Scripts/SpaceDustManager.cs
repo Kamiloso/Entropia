@@ -1,61 +1,54 @@
-using System.Collections.Generic;
 using Entropia;
 using Entropia.Structs;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceDustManager : MonoBehaviour
+[RequireComponent(typeof(Instantiator))]
+public class SpaceDustManager : ExtendedMonoBehaviour
 {
-    [SerializeField] Transform camera;
-    [SerializeField] GameObject dustPrefab;
-    [SerializeField] int exponent;
-    [SerializeField] long range;
+    private const string SPACE_DUST = "SpaceDust";
+
+    [SerializeField] Transform Camera;
+    [SerializeField] int Exponent;
+    [SerializeField] long Range;
+
+    private Instantiator Instantiator;
 
     private readonly Dictionary<Vec3Int, GameObject> _instances = new();
-    private readonly Stack<GameObject> _instancePool = new();
 
     private SectorSpy _sectorSpy;
 
     private void Awake()
     {
-        _sectorSpy = new SectorSpy(exponent, range);
+        if (Camera == null)
+            throw new ArgumentNullException(nameof(Camera));
+
+        Instantiator = Self<Instantiator>();
+
+        _sectorSpy = new SectorSpy(Exponent, Range);
         _sectorSpy.OnLoad += HandleSectorLoad;
         _sectorSpy.OnUnload += HandleSectorUnload;
     }
 
     private void Update()
     {
-        if (camera == null || dustPrefab == null) return;
-
-        _sectorSpy.UpdatePosition(camera.position.ToVec3());
+        _sectorSpy.UpdatePosition(Camera.position.ToVec3());
     }
 
     private void HandleSectorLoad(Sector3 sector)
     {
-        Vector3 targetPosition = sector.Center().ToVector3();
-
-        if (_instancePool.TryPop(out GameObject recycled))
-        {
-            recycled.transform.position = targetPosition;
-            recycled.SetActive(true);
-            _instances.Add(sector.Index, recycled);
-        }
-        else
-        {
-            _instances.Add(sector.Index, Instantiate(
-                original: dustPrefab,
-                position: targetPosition,
-                rotation: Quaternion.identity,
-                parent: transform
-            ));
-        }
+        _instances.Add(sector.Index, Instantiator.CreateAndAttach(
+            prefabName: SPACE_DUST,
+            deltapos: sector.Center()
+        ));
     }
 
     private void HandleSectorUnload(Sector3 sector)
     {
         if (_instances.TryGetValue(sector.Index, out GameObject instance))
         {
-            instance.SetActive(false);
-            _instancePool.Push(instance);
+            Instantiator.ReturnToPool(instance);
             _instances.Remove(sector.Index);
         }
     }

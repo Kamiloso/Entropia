@@ -6,10 +6,9 @@ using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Entropia.Root.Lifetime;
-
 public interface IUnitySingleton { }
-public interface ICrashHandlerUnitySingleton : IUnitySingleton { }
+public interface IPreUnitySingleton : IUnitySingleton { }
+public interface INoExceptUnitySingleton : IUnitySingleton { }
 
 public static class UnitySingletons
 {
@@ -34,7 +33,8 @@ public static class UnitySingletons
                     typeof(MonoBehaviour).IsAssignableFrom(t) &&
                     typeof(IUnitySingleton).IsAssignableFrom(t) &&
                     !t.IsAbstract)
-                .OrderByDescending(typeof(ICrashHandlerUnitySingleton).IsAssignableFrom)
+                .OrderByDescending(typeof(INoExceptUnitySingleton).IsAssignableFrom)
+                .ThenByDescending(typeof(IPreUnitySingleton).IsAssignableFrom)
                 .ToList();
 
             foreach (Type type in types)

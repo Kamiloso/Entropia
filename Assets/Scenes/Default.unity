@@ -449,10 +449,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5d0cdd21bd8e8a48853158bb2507f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  target: {fileID: 1496425719}
-  localOffset: {x: 0, y: 2.5, z: -8}
-  positionSmooth: 10
-  rotationSmooth: 10
+  Target: {fileID: 1496425719}
+  LocalOffset: {x: 0, y: 2.5, z: -8}
+  PositionSmooth: 5
+  RotationSmooth: 5
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +623,7 @@ GameObject:
   m_Component:
   - component: {fileID: 738283215}
   - component: {fileID: 738283214}
+  - component: {fileID: 738283216}
   m_Layer: 0
   m_Name: FeatureSpawning
   m_TagString: Untagged
@@ -642,9 +643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 497c1e6f7facbb24189992eea5a7eac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FeatureSpawning
-  camera: {fileID: 330585546}
-  featurePrefab: {fileID: 991788164632722001, guid: d498ca1ab90b0944d8e0479f5d910bdc, type: 3}
-  range: 15
+  Ship: {fileID: 1496425719}
+  Range: 15
 --- !u!4 &738283215
 Transform:
   m_ObjectHideFlags: 0
@@ -660,6 +660,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &738283216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738283213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce7c8b47069db3048a702c831c51fbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Instantiator
+  PrefabList: {fileID: 11400000, guid: 25f635367d29a014ebb11722c91f7a1d, type: 2}
 --- !u!1 &785995297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,13 +1181,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 857a8a47b98b23b48a0ccaa38db26ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipControl
-  engineThrust: 10
-  turboThrust: 20
-  backThrust: -5
-  verticalTorque: 1.5
-  horizontalTorque: 1
-  rollTorque: 0.75
-  alignmentSpeed: 4
+  EngineThrust: 10
+  TurboThrust: 20
+  BackThrust: -5
+  VerticalTorque: 1.2
+  HorizontalTorque: 1.2
+  RollTorque: 0.9
+  AlignmentSpeed: 10
 --- !u!54 &1496425718
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1185,7 +1198,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0.5
-  m_AngularDamping: 0.5
+  m_AngularDamping: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1199,7 +1212,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!4 &1496425719
@@ -1437,6 +1450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1714651357}
   - component: {fileID: 1714651356}
+  - component: {fileID: 1714651358}
   m_Layer: 0
   m_Name: SpaceDustManager
   m_TagString: Untagged
@@ -1456,10 +1470,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015ee78115bc9c145bbee88ec9794d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpaceDust
-  camera: {fileID: 330585546}
-  dustPrefab: {fileID: 8360215377750113395, guid: e6aaef3f9b8c0b74f9b580360cf7d0ba, type: 3}
-  exponent: 4
-  range: 4
+  Camera: {fileID: 330585546}
+  Exponent: 4
+  Range: 5
 --- !u!4 &1714651357
 Transform:
   m_ObjectHideFlags: 0
@@ -1475,6 +1488,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1714651358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714651355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce7c8b47069db3048a702c831c51fbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Instantiator
+  PrefabList: {fileID: 11400000, guid: cd86d5f1c5800fa4c90b2c752a59e97c, type: 2}
 --- !u!1 &1749221375
 GameObject:
   m_ObjectHideFlags: 0
