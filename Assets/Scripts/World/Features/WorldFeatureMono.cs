@@ -1,9 +1,9 @@
-using Entropia.Worldgen;
+using Entropia.World.Features;
 using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public abstract class WorldFeatureMono : ExtendedMonoBehaviour
+public abstract class WorldFeatureMono : MonoBehaviour
 {
     public abstract void Initialize(WorldFeature worldFeature);
 }
