@@ -3,18 +3,31 @@ using System;
 using UnityEngine;
 using VContainer;
 
-[RequireComponent(typeof(CameraFollow))]
+[RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(ShipMovement))]
 public class MainPlayer : MonoBehaviour
 {
-    private ShipMovement ShipMovement;
     private PlayerInput PlayerInput;
+    private ShipMovement ShipMovement;
+
+    public event Action OnRespawn;
+    public event Action OnDeath;
 
     [Inject]
-    private void Construct(PlayerInput playerInput)
+    private void Construct()
     {
+        PlayerInput = GetComponent<PlayerInput>();
         ShipMovement = GetComponent<ShipMovement>();
-        PlayerInput = playerInput;
+    }
+
+    private void OnEnable()
+    {
+        OnRespawn?.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        OnDeath?.Invoke();
     }
 
     private void FixedUpdate()
@@ -43,6 +56,6 @@ public class MainPlayer : MonoBehaviour
         ShipMovement.ProcessPhysics();
     }
 
+    // TODO: make origin shifting
     public Vec3 RenderPosition() => transform.position.ToVec3();
-    public Vec3 OriginPosition() => throw new NotImplementedException();
 }

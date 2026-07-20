@@ -30,8 +30,8 @@ public readonly record struct Vec3(double x, double y, double z)
     public static readonly Vec3 One = new(1, 1, 1);
     public static readonly Vec3 Up = new(0, 1, 0);
     public static readonly Vec3 Down = new(0, -1, 0);
-    public static readonly Vec3 Left = new(-1, 0, 0);
     public static readonly Vec3 Right = new(1, 0, 0);
+    public static readonly Vec3 Left = new(-1, 0, 0);
     public static readonly Vec3 Forward = new(0, 0, 1);
     public static readonly Vec3 Back = new(0, 0, -1);
 

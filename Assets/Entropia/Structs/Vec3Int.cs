@@ -21,8 +21,8 @@ public readonly record struct Vec3Int(int x, int y, int z)
     public static readonly Vec3Int One = new(1, 1, 1);
     public static readonly Vec3Int Up = new(0, 1, 0);
     public static readonly Vec3Int Down = new(0, -1, 0);
-    public static readonly Vec3Int Left = new(-1, 0, 0);
     public static readonly Vec3Int Right = new(1, 0, 0);
+    public static readonly Vec3Int Left = new(-1, 0, 0);
     public static readonly Vec3Int Forward = new(0, 0, 1);
     public static readonly Vec3Int Back = new(0, 0, -1);
 

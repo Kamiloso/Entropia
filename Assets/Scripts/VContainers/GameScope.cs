@@ -6,11 +6,14 @@ using VContainer.Unity;
 [RequireComponent(typeof(AutoInjector))]
 public class GameScope : LifetimeScope
 {
+    private static readonly GameConfig TempGameConfig = new(
+        Seed: 0
+    );
+
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterComponentInHierarchy<MainPlayer>();
-        builder.RegisterComponentInHierarchy<PlayerInput>();
 
-        builder.RegisterGameModels();
+        builder.RegisterGameModels(TempGameConfig);
     }
 }

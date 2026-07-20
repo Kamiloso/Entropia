@@ -1,20 +1,21 @@
 using System;
 using UnityEngine;
+using VContainer;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ShipMovement : MonoBehaviour
 {
     [Header("Thrust")]
-    [SerializeField] float TurboThrust;
-    [SerializeField] float EngineThrust;
-    [SerializeField] float BrakeThrust;
+    [SerializeField] private float m_TurboThrust;
+    [SerializeField] private float m_EngineThrust;
+    [SerializeField] private float m_BrakeThrust;
 
     [Header("Movement")]
-    [SerializeField] Vector3 MovementStrength;
-    [SerializeField] Vector3 TorqueStrength;
+    [SerializeField] private Vector3 m_MovementStrength;
+    [SerializeField] private Vector3 m_TorqueStrength;
 
     [Header("Dynamics")]
-    [SerializeField] float AlignmentSpeed;
+    [SerializeField] private float m_AlignmentSpeed;
 
     private Rigidbody Rigidbody;
 
@@ -22,7 +23,8 @@ public class ShipMovement : MonoBehaviour
     private Vector3 _movementBuffer = Vector3.zero;
     private Vector3 _torqueBuffer = Vector3.zero;
 
-    private void Awake()
+    [Inject]
+    private void Construct()
     {
         Rigidbody = GetComponent<Rigidbody>();
     }
@@ -41,18 +43,18 @@ public class ShipMovement : MonoBehaviour
         Rigidbody.linearVelocity = Vector3.Lerp(
             a: Rigidbody.linearVelocity,
             b: Vector3.Project(Rigidbody.linearVelocity, transform.forward),
-            t: AlignmentSpeed * Time.fixedDeltaTime
+            t: m_AlignmentSpeed * Time.fixedDeltaTime
         );
     }
 
     public void ApplyTurboThrust() =>
-        _thrustBuffer += TurboThrust;
+        _thrustBuffer += m_TurboThrust;
 
     public void ApplyEngineThrust() =>
-        _thrustBuffer += EngineThrust;
+        _thrustBuffer += m_EngineThrust;
 
     public void ApplyBrakeThrust() =>
-        _thrustBuffer += BrakeThrust;
+        _thrustBuffer += m_BrakeThrust;
 
     public void ApplyMovement(int x, int y, int z)
     {
@@ -61,9 +63,9 @@ public class ShipMovement : MonoBehaviour
         if (z < -1 || z > 1) throw new ArgumentOutOfRangeException(nameof(z));
 
         Rigidbody.AddRelativeForce(new Vector3(
-            x: x * MovementStrength.x,
-            y: y * MovementStrength.y,
-            z: z * MovementStrength.z
+            x: x * m_MovementStrength.x,
+            y: y * m_MovementStrength.y,
+            z: z * m_MovementStrength.z
         ));
     }
 
@@ -74,9 +76,9 @@ public class ShipMovement : MonoBehaviour
         if (z < -1 || z > 1) throw new ArgumentOutOfRangeException(nameof(z));
 
         Rigidbody.AddRelativeTorque(new Vector3(
-            x: x * TorqueStrength.x,
-            y: y * TorqueStrength.y,
-            z: z * TorqueStrength.z
+            x: x * m_TorqueStrength.x,
+            y: y * m_TorqueStrength.y,
+            z: z * m_TorqueStrength.z
         ));
     }
 }

@@ -7,15 +7,11 @@ public enum AsteroidType
 {
     Unknown = 0,
     Stone = 1,
-    Dark = 2,
+    Coal = 2,
     Copper = 3,
     Gold = 4,
     Grass = 5,
     Amethyst = 6,
-    Coal = 7,
-    Magnetite = 8,
-    Red = 9,
-    Diamond = 10,
 }
 
 public sealed class Asteroid : WorldFeature
@@ -25,7 +21,7 @@ public sealed class Asteroid : WorldFeature
 
     public Asteroid(
         Vec3 position,
-        Vec3 rotation,
+        Rot3 rotation,
         AsteroidType type,
         float size) : base(position, rotation)
     {

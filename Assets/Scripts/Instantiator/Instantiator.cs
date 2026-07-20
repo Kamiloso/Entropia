@@ -2,31 +2,39 @@ using Entropia.Structs;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 public abstract class Instantiator : MonoBehaviour
 {
-    private readonly InstancePool _pool = new();
+    [SerializeField] private InstancePool m_Pool;
+
+    private IObjectResolver ObjectResolver;
+
     private readonly Dictionary<EntityId, string> _prefabNames = new();
 
-    protected abstract bool UsePooling { get; }
+    [Inject]
+    private void Construct_Instantiator(IObjectResolver objectResolver)
+    {
+        if (m_Pool == null)
+            throw new ArgumentNullException(nameof(m_Pool));
 
-    protected abstract GameObject GetPrefabByName(string prefabName);
+        ObjectResolver = objectResolver;
+    }
 
     protected GameObject Spawn(
         string prefabName,
         Vec3 deltapos = default,
-        Vec3 rotation = default,
+        Rot3 rotation = default,
         string hierarchyName = null)
     {
-        if (!UsePooling || !_pool.TryGet(prefabName, out GameObject obj))
+        if (!m_Pool.TryGet(prefabName, out GameObject obj))
         {
-            obj = Instantiate(
-                original: GetPrefabByName(prefabName),
-                parent: transform
-            );
-
+            obj = ObjectResolver.Instantiate(m_Pool.Prefabs.GetByName(prefabName));
             _prefabNames.Add(obj.GetEntityId(), prefabName);
         }
+
+        obj.transform.SetParent(transform, false);
 
         obj.transform.SetLocalPositionAndRotation(
             localPosition: deltapos.ToVector3(),
@@ -42,10 +50,11 @@ public abstract class Instantiator : MonoBehaviour
     {
         ThrowIfNotOwned(obj);
 
-        if (UsePooling)
+        string prefabName = PrefabNameOf(obj);
+
+        if (!m_Pool.IsFull(prefabName))
         {
-            string prefabName = PrefabNameOf(obj);
-            _pool.Add(prefabName, obj);
+            m_Pool.Add(prefabName, obj);
         }
         else
         {

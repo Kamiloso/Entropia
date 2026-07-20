@@ -1,18 +1,9 @@
-using Entropia.Structs;
-using Entropia.World;
 using Entropia.World.Features;
 using System;
 using UnityEngine;
 
 public class WorldFeatureInstantiator : Instantiator
 {
-    [SerializeField] PrefabList PrefabList;
-
-    protected override bool UsePooling => true;
-
-    protected override GameObject GetPrefabByName(string prefabName) =>
-        PrefabList.GetByName(prefabName);
-
     public WorldFeatureMono Spawn(WorldFeature feature)
     {
         GameObject obj = Spawn(
