@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[UseComponent(typeof(WorldFeatureInstantiator))]
 [Include(typeof(MainPlayer))]
 [Include(typeof(IWorldProvider))]
 [Include(typeof(ISectorSpy))]
+[UseComponent(typeof(WorldFeatureInstantiator))]
 public partial class WorldManager : MonoBehaviour
 {
     private readonly Dictionary<Sector3, List<WorldFeatureMono>> _loadedSectors = new();

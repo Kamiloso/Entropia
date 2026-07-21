@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NoEntropy.Writers;
-using NoEntropy.Other;
 
 namespace NoEntropy;
 
@@ -67,7 +66,7 @@ public partial class Generator : IIncrementalGenerator
         }
 
         List<string> useComponentTypes = [];
-        List<string> useInjectionTypes = [];
+        List<string> useDependencyTypes = [];
         List<string> useUnitySingletonTypes = [];
 
         foreach (var attr in classSymbol.GetAttributes())
@@ -88,15 +87,15 @@ public partial class Generator : IIncrementalGenerator
             if (attrName == MonoAttributes.UseComponent.LongName)
                 useComponentTypes.Add(typeStr);
 
-            if (attrName == MonoAttributes.UseInjection.LongName)
-                useInjectionTypes.Add(typeStr);
+            if (attrName == MonoAttributes.UseDependency.LongName)
+                useDependencyTypes.Add(typeStr);
 
             if (attrName == MonoAttributes.UseUnitySingleton.LongName)
                 useUnitySingletonTypes.Add(typeStr);
         }
 
         if (nullCheckNames.Count == 0 && useComponentTypes.Count == 0 &&
-            useInjectionTypes.Count == 0 && useUnitySingletonTypes.Count == 0)
+            useDependencyTypes.Count == 0 && useUnitySingletonTypes.Count == 0)
         {
             return null;
         }
@@ -109,7 +108,7 @@ public partial class Generator : IIncrementalGenerator
         MonoInfo monoInfo = new(
             NullCheckNames: nullCheckNames,
             UseComponentTypes: useComponentTypes,
-            UseInjectionTypes: useInjectionTypes,
+            UseDependencyTypes: useDependencyTypes,
             UseUnitySingletonTypes: useUnitySingletonTypes
         );
 

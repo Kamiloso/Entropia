@@ -1,4 +1,6 @@
-﻿namespace NoEntropy.Writers;
+﻿using static NoEntropy.Other.NamingConventions;
+
+namespace NoEntropy.Writers;
 
 internal abstract record AttributeWriter(string Name)
 {
@@ -15,7 +17,7 @@ internal abstract record AttributeWriter(string Name)
     }
 
     public string GenerateHintName() => $"{Name}Attribute.g.cs";
-    public string GenerateSource() => $$"""
+    public string GenerateSource() => FormatCode($$"""
         using System;
 
         namespace {{nameof(NoEntropy)}}
@@ -26,5 +28,6 @@ internal abstract record AttributeWriter(string Name)
                 {{ClassBody}}
             }
         }
-        """;
+
+        """);
 }

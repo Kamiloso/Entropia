@@ -1,23 +1,11 @@
 using Entropia.World.Features;
-using System;
+using NoEntropy;
 using UnityEngine;
-using VContainer;
 
-[RequireComponent(typeof(MeshRenderer))]
-public class AsteroidMono : WorldFeatureMono<Asteroid>
+public partial class AsteroidMono : WorldFeatureMono<Asteroid>
 {
-    [SerializeField] private MaterialList m_Materials;
-    [SerializeField] private MeshRenderer m_MeshRenderer;
-
-    [Inject]
-    private void Construct()
-    {
-        if (m_Materials == null)
-            throw new ArgumentNullException(nameof(m_Materials));
-
-        if (m_MeshRenderer == null)
-            throw new ArgumentNullException(nameof(m_MeshRenderer));
-    }
+    [SerializeField] [NullCheck] private MaterialList m_Materials;
+    [SerializeField] [NullCheck] private MeshRenderer m_MeshRenderer;
 
     protected override void Initialize(Asteroid asteroid)
     {

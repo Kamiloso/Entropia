@@ -1,4 +1,7 @@
-﻿namespace NoEntropy.Other;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+
+namespace NoEntropy.Other;
 
 internal static class NamingConventions
 {
@@ -26,5 +29,13 @@ internal static class NamingConventions
             return input;
 
         return char.ToLowerInvariant(input[0]) + input.Substring(1);
+    }
+
+    public static string FormatCode(string rawCode)
+    {
+        return CSharpSyntaxTree.ParseText(rawCode)
+            .GetRoot()
+            .NormalizeWhitespace()
+            .ToFullString();
     }
 }

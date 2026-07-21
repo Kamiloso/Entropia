@@ -1,26 +1,16 @@
 using UnityEngine;
-using VContainer;
 
-public class CameraMovement : MonoBehaviour
+[Include(typeof(MainPlayer))]
+public partial class CameraMovement : MonoBehaviour
 {
     [SerializeField] private Vector3 m_FollowOffset;
     [SerializeField] private float m_PositionSmooth;
     [SerializeField] private float m_RotationSmooth;
 
-    private MainPlayer MainPlayer;
-
     private bool _alive = false;
     private bool _jump = false;
 
-    [Inject]
-    private void Construct(MainPlayer mainPlayer)
-    {
-        MainPlayer = mainPlayer;
-
-        OnInitialize();
-    }
-
-    private void OnInitialize()
+    partial void OnInitialize()
     {
         MainPlayer.OnRespawn += () =>
         {

@@ -1,4 +1,5 @@
-﻿using static NoEntropy.Other.NamingConventions;
+﻿using Microsoft.CodeAnalysis;
+using static NoEntropy.Other.NamingConventions;
 using static NoEntropy.Other.Utils;
 
 namespace NoEntropy.Writers;
@@ -6,31 +7,31 @@ namespace NoEntropy.Writers;
 internal readonly record struct MonoInfo(
     IReadOnlyList<string> NullCheckNames,
     IReadOnlyList<string> UseComponentTypes,
-    IReadOnlyList<string> UseInjectionTypes,
+    IReadOnlyList<string> UseDependencyTypes,
     IReadOnlyList<string> UseUnitySingletonTypes
 );
 
 internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoInfo MonoInfo)
 {
-    public string Hash { get; } = HashString($"{Namespace}::{Name}");
+    public string Hash { get; } = HashString($"{Namespace}::{Name}").Substring(0, 16);
 
     public string GenerateHintName() => $"{Name}.g.cs";
     public string GenerateSource()
     {
         string classBody = $$"""
             {{RequireUnityAttributes(MonoInfo.UseComponentTypes)}}
-            public partial class {{Name}}
+            partial class {{Name}}
             {
                 {{FieldDeclarations(MonoInfo.UseComponentTypes)}}
-                {{FieldDeclarations(MonoInfo.UseInjectionTypes)}}
+                {{FieldDeclarations(MonoInfo.UseDependencyTypes)}}
                 {{FieldDeclarations(MonoInfo.UseUnitySingletonTypes)}}
                 
                 [Inject]
-                private void Construct_{{Hash}}({{InjectionArgs(MonoInfo.UseInjectionTypes)}})
+                private void Construct_{{Hash}}({{DependencyArgs(MonoInfo.UseDependencyTypes)}})
                 {
                     {{NullChecks(MonoInfo.NullCheckNames)}}
                     {{ComponentAssignments(MonoInfo.UseComponentTypes)}}
-                    {{InjectionAssignments(MonoInfo.UseInjectionTypes)}}
+                    {{DependencyAssignments(MonoInfo.UseDependencyTypes)}}
                     {{UnitySingletonAssignments(MonoInfo.UseUnitySingletonTypes)}}
 
                     OnInitialize();
@@ -42,17 +43,17 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
 
         if (Namespace == string.Empty)
         {
-            return $$"""
+            return FormatCode($$"""
                 using System;
                 using UnityEngine;
                 using VContainer;
 
                 {{classBody}}
-                """;
+                """);
         }
         else
         {
-            return $$"""
+            return FormatCode($$"""
                 using System;
                 using UnityEngine;
                 using VContainer;
@@ -61,7 +62,7 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
                 {
                     {{classBody}}
                 }
-                """;
+                """);
         }
     }
 
@@ -73,7 +74,7 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
             """));
     }
 
-    private string InjectionArgs(IReadOnlyList<string> types)
+    private string DependencyArgs(IReadOnlyList<string> types)
     {
         return string.Join(", ", types.Select(type => $"{type} {TypeToArgName(type)}"));
     }
@@ -99,7 +100,7 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
             """));
     }
 
-    private string InjectionAssignments(IReadOnlyList<string> types)
+    private string DependencyAssignments(IReadOnlyList<string> types)
     {
         return string.Join("\n", types.Select(type => $"""
             {TypeToFieldName(type)} = {TypeToArgName(type)};
