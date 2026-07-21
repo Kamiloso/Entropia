@@ -36,10 +36,10 @@ public abstract class AssetList<T> : ScriptableObject where T : Object
             if (obj == null) continue;
 
             if (!Regex.IsMatch(obj.name, "[a-zA-Z0-9_-]*"))
-                throw new ArgumentException($"Invalid {AssetTypeName.ToLower()} name: {obj.name}");
+                throw new ArgumentException($"Invalid '{AssetTypeName}' name: {obj.name}");
 
             if (map.ContainsKey(obj.name))
-                throw new InvalidOperationException($"Duplicate {AssetTypeName.ToLower()} name: \"{obj.name}\"");
+                throw new InvalidOperationException($"Duplicate '{AssetTypeName}' name: \"{obj.name}\"");
 
             map[obj.name] = obj;
         }

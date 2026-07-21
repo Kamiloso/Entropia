@@ -1,23 +1,15 @@
+using NoEntropy;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
-using VContainer;
 
-public class InstancePool : MonoBehaviour
+public partial class InstancePool : MonoBehaviour
 {
-    [SerializeField] private PrefabList m_Prefabs;
+    [SerializeField] [NullCheck] private PrefabList m_Prefabs;
     [SerializeField] private int m_LimitPerType;
 
     private readonly Dictionary<string, Stack<GameObject>> _pool = new();
 
     public PrefabList Prefabs => m_Prefabs;
-
-    [Inject]
-    private void Construct()
-    {
-        if (m_Prefabs == null)
-            throw new ArgumentNullException(nameof(m_Prefabs));
-    }
 
     public bool IsFull(string prefabName)
     {

@@ -1,9 +1,9 @@
 using System;
+using NoEntropy;
 using UnityEngine;
-using VContainer;
 
-[RequireComponent(typeof(Rigidbody))]
-public class ShipMovement : MonoBehaviour
+[UseComponent(typeof(Rigidbody))]
+public partial class ShipMovement : MonoBehaviour
 {
     [Header("Thrust")]
     [SerializeField] private float m_TurboThrust;
@@ -17,17 +17,9 @@ public class ShipMovement : MonoBehaviour
     [Header("Dynamics")]
     [SerializeField] private float m_AlignmentSpeed;
 
-    private Rigidbody Rigidbody;
-
     private float _thrustBuffer = 0f;
     private Vector3 _movementBuffer = Vector3.zero;
     private Vector3 _torqueBuffer = Vector3.zero;
-
-    [Inject]
-    private void Construct()
-    {
-        Rigidbody = GetComponent<Rigidbody>();
-    }
 
     public void ProcessPhysics()
     {

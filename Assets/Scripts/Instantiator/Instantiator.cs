@@ -1,26 +1,17 @@
 using Entropia.Structs;
+using NoEntropy;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public abstract class Instantiator : MonoBehaviour
+[Include(typeof(IObjectResolver))]
+public abstract partial class Instantiator : MonoBehaviour
 {
-    [SerializeField] private InstancePool m_Pool;
-
-    private IObjectResolver ObjectResolver;
+    [SerializeField] [NullCheck] private InstancePool m_Pool;
 
     private readonly Dictionary<EntityId, string> _prefabNames = new();
-
-    [Inject]
-    private void Construct_Instantiator(IObjectResolver objectResolver)
-    {
-        if (m_Pool == null)
-            throw new ArgumentNullException(nameof(m_Pool));
-
-        ObjectResolver = objectResolver;
-    }
 
     protected GameObject Spawn(
         string prefabName,

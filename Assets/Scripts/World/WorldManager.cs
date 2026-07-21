@@ -1,33 +1,20 @@
 using Entropia.Structs;
 using Entropia.World;
 using Entropia.World.Spy;
+using NoEntropy;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using VContainer;
 
-[RequireComponent(typeof(WorldFeatureInstantiator))]
-public class WorldManager : MonoBehaviour
+[UseComponent(typeof(WorldFeatureInstantiator))]
+[Include(typeof(MainPlayer))]
+[Include(typeof(IWorldProvider))]
+[Include(typeof(ISectorSpy))]
+public partial class WorldManager : MonoBehaviour
 {
-    private WorldFeatureInstantiator WorldFeatureInstantiator;
-    private MainPlayer MainPlayer;
-    private IWorldProvider WorldProvider;
-    private ISectorSpy SectorSpy;
-
     private readonly Dictionary<Sector3, List<WorldFeatureMono>> _loadedSectors = new();
 
-    [Inject]
-    private void Construct(MainPlayer mainPlayer, IWorldProvider worldgen, ISectorSpy sectorSpy)
-    {
-        WorldFeatureInstantiator = GetComponent<WorldFeatureInstantiator>();
-        MainPlayer = mainPlayer;
-        WorldProvider = worldgen;
-        SectorSpy = sectorSpy;
-
-        OnInitialize();
-    }
-
-    private void OnInitialize()
+    partial void OnInitialize()
     {
         SectorSpy.OnLoad += LoadSector;
         SectorSpy.OnUnload += UnloadSector;

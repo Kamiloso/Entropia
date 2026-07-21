@@ -1,24 +1,14 @@
 using Entropia.Structs;
+using NoEntropy;
 using System;
 using UnityEngine;
-using VContainer;
 
-[RequireComponent(typeof(PlayerInput))]
-[RequireComponent(typeof(ShipMovement))]
-public class MainPlayer : MonoBehaviour
+[UseComponent(typeof(PlayerInput))]
+[UseComponent(typeof(ShipMovement))]
+public partial class MainPlayer : MonoBehaviour
 {
-    private PlayerInput PlayerInput;
-    private ShipMovement ShipMovement;
-
     public event Action OnRespawn;
     public event Action OnDeath;
-
-    [Inject]
-    private void Construct()
-    {
-        PlayerInput = GetComponent<PlayerInput>();
-        ShipMovement = GetComponent<ShipMovement>();
-    }
 
     private void OnEnable()
     {
