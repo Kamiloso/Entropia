@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 2966143351167176758}
   - component: {fileID: 2431172599403160494}
   - component: {fileID: 5261658556521556402}
+  - component: {fileID: 6997183973869633189}
   m_Layer: 0
   m_Name: Asteroid
   m_TagString: Untagged
@@ -209,3 +210,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6997183973869633189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991788164632722001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11fa7385ce458204493632ebeb20f0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShiftTransform

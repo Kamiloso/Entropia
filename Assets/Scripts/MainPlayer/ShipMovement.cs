@@ -3,6 +3,7 @@ using NoEntropy;
 using UnityEngine;
 
 [UseComponent(typeof(Rigidbody))]
+[DisallowMultipleComponent]
 public partial class ShipMovement : MonoBehaviour
 {
     [Header("Thrust")]

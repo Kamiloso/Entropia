@@ -22,9 +22,9 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
             {{RequireUnityAttributes(MonoInfo.UseComponentTypes)}}
             partial class {{Name}}
             {
-                {{FieldDeclarations(MonoInfo.UseComponentTypes)}}
-                {{FieldDeclarations(MonoInfo.UseDependencyTypes)}}
-                {{FieldDeclarations(MonoInfo.UseUnitySingletonTypes)}}
+                {{PropertyDeclarations(MonoInfo.UseComponentTypes)}}
+                {{PropertyDeclarations(MonoInfo.UseDependencyTypes)}}
+                {{PropertyDeclarations(MonoInfo.UseUnitySingletonTypes)}}
                 
                 [Inject]
                 private void Construct_{{Hash}}({{DependencyArgs(MonoInfo.UseDependencyTypes)}})
@@ -86,10 +86,10 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
             """));
     }
 
-    private string FieldDeclarations(IReadOnlyList<string> types)
+    private string PropertyDeclarations(IReadOnlyList<string> types)
     {
-        return string.Join("\n", types.Select(type => $"""
-            private {type} {TypeToFieldName(type)};
+        return string.Join("\n", types.Select(type => $$"""
+            public {{type}} {{TypeToFieldName(type)}} { get; private set; }
             """));
     }
 

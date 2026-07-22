@@ -7,6 +7,7 @@ using VContainer;
 using VContainer.Unity;
 
 [Include(typeof(IObjectResolver))]
+[DisallowMultipleComponent]
 public abstract partial class Instantiator : MonoBehaviour
 {
     [SerializeField] [NullCheck] private InstancePool m_Pool;
@@ -25,14 +26,15 @@ public abstract partial class Instantiator : MonoBehaviour
             _prefabNames.Add(obj.GetEntityId(), prefabName);
         }
 
-        obj.transform.SetParent(transform, false);
-
-        obj.transform.SetLocalPositionAndRotation(
-            localPosition: deltapos.ToVector3(),
-            localRotation: rotation.ToQuaternion()
-        );
-
         obj.name = hierarchyName ?? $"{prefabName}(Clone)";
+
+        obj.transform.SetParent(transform, false);
+        obj.transform.localRotation = rotation.ToQuaternion();
+
+        if (obj.TryGetComponent<ShiftTransform>(out var shiftTransform))
+            shiftTransform.Position = deltapos;
+        else
+            obj.transform.localPosition = deltapos.ToVector3();
 
         return obj;
     }

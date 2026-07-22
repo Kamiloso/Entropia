@@ -4846,6 +4846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974697132974441349}
   - component: {fileID: 7663836750409943563}
+  - component: {fileID: -6353907242851049011}
   m_Layer: 0
   m_Name: SpaceDust
   m_TagString: Untagged
@@ -4881,3 +4882,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bb486964b7473458eb69f69fea006e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpaceDustMono
+--- !u!114 &-6353907242851049011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8360215377750113395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11fa7385ce458204493632ebeb20f0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShiftTransform

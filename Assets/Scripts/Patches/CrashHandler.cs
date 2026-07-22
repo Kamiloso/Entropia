@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Scripting;
 
 [Preserve]
+[DisallowMultipleComponent]
 public class CrashHandler : MonoBehaviour, INoExceptUnitySingleton
 {
     private static bool _isEditor;

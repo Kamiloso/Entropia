@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[DisallowMultipleComponent]
 public class PlayerInput : MonoBehaviour
 {
     public bool IsTurbo =>

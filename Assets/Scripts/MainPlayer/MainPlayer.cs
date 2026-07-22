@@ -5,6 +5,8 @@ using UnityEngine;
 
 [UseComponent(typeof(PlayerInput))]
 [UseComponent(typeof(ShipMovement))]
+[UseComponent(typeof(ShiftTransform))]
+[DisallowMultipleComponent]
 public partial class MainPlayer : MonoBehaviour
 {
     public event Action OnRespawn;
@@ -20,8 +22,24 @@ public partial class MainPlayer : MonoBehaviour
         OnDeath?.Invoke();
     }
 
+    public double m_x;
+    public double m_y;
+    public double m_z;
+    public bool m_TeleportSubmit;
+
     private void FixedUpdate()
     {
+        if (m_TeleportSubmit)
+        {
+            m_TeleportSubmit = false;
+
+            ShiftTransform.Position = new Vec3(
+                x: m_x,
+                y: m_y,
+                z: m_z
+            );
+        }
+
         if (PlayerInput.IsTurbo)
             ShipMovement.ApplyTurboThrust();
 
@@ -45,7 +63,4 @@ public partial class MainPlayer : MonoBehaviour
 
         ShipMovement.ProcessPhysics();
     }
-
-    // TODO: make origin shifting
-    public Vec3 RenderPosition() => transform.position.ToVec3();
 }

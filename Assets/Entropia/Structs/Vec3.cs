@@ -8,6 +8,33 @@ namespace Entropia.Structs;
 
 public readonly record struct Vec3(double x, double y, double z)
 {
+    public double Magnitude => Math.Sqrt(x * x + y * y + z * z);
+    public double SqrMagnitude => x * x + y * y + z * z;
+    public Vec3 Normalized => Magnitude > 1E-15 ? this / Magnitude : Zero;
+
+    public static double Distance(Vec3 a, Vec3 b)
+    {
+        double dx = a.x - b.x;
+        double dy = a.y - b.y;
+        double dz = a.z - b.z;
+
+        return Math.Sqrt(dx * dx + dy * dy + dz * dz);
+    }
+
+    public static double Dot(Vec3 a, Vec3 b)
+    {
+        return a.x * b.x + a.y * b.y + a.z * b.z;
+    }
+
+    public static Vec3 Cross(Vec3 a, Vec3 b)
+    {
+        return new Vec3(
+            a.y * b.z - a.z * b.y,
+            a.z * b.x - a.x * b.z,
+            a.x * b.y - a.y * b.x
+        );
+    }
+
     public Vec3Int FloorToVec3Int()
     {
         return new Vec3Int(

@@ -1,6 +1,7 @@
 using UnityEngine;
 using VContainer;
 
+[DisallowMultipleComponent]
 public class AutoInjector : MonoBehaviour
 {
     [Inject]

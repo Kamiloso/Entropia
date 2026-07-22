@@ -13,6 +13,7 @@ public class GameScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterComponentInHierarchy<MainPlayer>();
+        builder.RegisterComponentInHierarchy<ShiftRoot>();
 
         builder.RegisterGameModels(TempGameConfig);
     }

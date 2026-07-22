@@ -2,6 +2,7 @@ using NoEntropy;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public partial class InstancePool : MonoBehaviour
 {
     [SerializeField] [NullCheck] private PrefabList m_Prefabs;

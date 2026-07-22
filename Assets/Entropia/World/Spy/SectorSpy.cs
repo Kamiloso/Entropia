@@ -1,7 +1,8 @@
 #nullable enable
 
-using System;
+using Entropia.Core;
 using Entropia.Structs;
+using System;
 
 namespace Entropia.World.Spy;
 
@@ -16,7 +17,7 @@ internal class SectorSpy : ISectorSpy
     private Vec3Int? _lastSectorIndex;
     private Box3Int? _lastBounds;
 
-    private bool _isUpdating;
+    private bool _updating;
 
     public SectorSpy(int exponent, long range)
     {
@@ -37,10 +38,10 @@ internal class SectorSpy : ISectorSpy
 
         if (_lastSectorIndex == sectorIndex) return;
 
-        if (_isUpdating)
-            throw new InvalidOperationException("Already updating internal state");
+        if (_updating)
+            throw new ConcurrentAccessException(typeof(SectorSpy));
 
-        _isUpdating = true;
+        _updating = true;
 
         try
         {
@@ -70,7 +71,7 @@ internal class SectorSpy : ISectorSpy
         }
         finally
         {
-            _isUpdating = false;
+            _updating = false;
         }
     }
 }

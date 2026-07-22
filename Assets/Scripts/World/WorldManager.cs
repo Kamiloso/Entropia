@@ -10,6 +10,7 @@ using UnityEngine;
 [Include(typeof(IWorldProvider))]
 [Include(typeof(ISectorSpy))]
 [UseComponent(typeof(WorldFeatureInstantiator))]
+[DisallowMultipleComponent]
 public partial class WorldManager : MonoBehaviour
 {
     private readonly Dictionary<Sector3, List<WorldFeatureMono>> _loadedSectors = new();
@@ -22,7 +23,7 @@ public partial class WorldManager : MonoBehaviour
 
     private void Update()
     {
-        SectorSpy.UpdatePosition(MainPlayer.RenderPosition());
+        SectorSpy.UpdatePosition(MainPlayer.ShiftTransform.Position);
     }
 
     private void LoadSector(Sector3 sector)

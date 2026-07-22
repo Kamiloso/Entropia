@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -453,6 +454,18 @@ MonoBehaviour:
   m_FollowOffset: {x: 0, y: 2.5, z: -8}
   m_PositionSmooth: 5
   m_RotationSmooth: 5
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11fa7385ce458204493632ebeb20f0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShiftTransform
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,6 +1349,8 @@ GameObject:
   - component: {fileID: 1496425721}
   - component: {fileID: 1496425722}
   - component: {fileID: 1496425717}
+  - component: {fileID: 1496425724}
+  - component: {fileID: 1496425723}
   - component: {fileID: 1496425718}
   m_Layer: 0
   m_Name: Main Player
@@ -1417,6 +1432,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f35ce528c15f1c49bfb7d9ce612d492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainPlayer
+  m_x: 0
+  m_y: 0
+  m_z: 0
+  m_TeleportSubmit: 0
 --- !u!114 &1496425722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1429,6 +1448,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0960a7c979fc2c44e9eb1c503a567367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInput
+--- !u!114 &1496425723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496425716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11fa7385ce458204493632ebeb20f0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShiftTransform
+--- !u!114 &1496425724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496425716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c28f64edf7335545887691235399ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShiftRoot
+  m_SectorExponent: 12
+  m_RangeTolerance: 4096
 --- !u!1 &1499995066
 GameObject:
   m_ObjectHideFlags: 0

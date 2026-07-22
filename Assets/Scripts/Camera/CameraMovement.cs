@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [Include(typeof(MainPlayer))]
+[DisallowMultipleComponent]
 public partial class CameraMovement : MonoBehaviour
 {
     [SerializeField] private Vector3 m_FollowOffset;
