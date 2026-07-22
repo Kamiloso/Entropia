@@ -8,7 +8,6 @@ namespace Entropia.Core;
 public class FastEvent
 {
     private readonly Dictionary<Action, int> _delegates = new();
-
     private bool _updating = false;
 
     public void Subscribe(Action action)

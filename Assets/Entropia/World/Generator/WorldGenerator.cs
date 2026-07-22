@@ -3,6 +3,8 @@
 using Entropia.Core;
 using Entropia.Structs;
 using Entropia.World.Features;
+using System.Collections.Immutable;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Entropia.World.Generator;
@@ -47,28 +49,47 @@ internal class WorldGenerator : IWorldGenerator
         {
             return new WorldChunk(
                 sector,
-                new WorldFeature[]
-                {
+                ImmutableArray.Create<WorldFeature>(
                     new SpaceDust(
                         position: sector.Center()
-                    ),
-                }
+                    )
+                )
             );
         }
         else
         {
-            return new WorldChunk(
-                sector,
-                new WorldFeature[]
-                {
-                    new Asteroid(
-                        position: sector.Center(),
-                        rotation: Rot3.Zero,
-                        type: (AsteroidType)((sector.Exponent - 4) / 2 % (int)AsteroidType.Amethyst + 1),
-                        size: (1 << sector.Exponent) / 4f
+            if (RandomNumberGenerator.GetInt32(16) == 0)
+            {
+                return new WorldChunk(
+                    sector,
+                    ImmutableArray.Create<WorldFeature>(
+                        new Asteroid(
+                            position: sector.Center(),
+                            rotation: Rot3.Zero,
+                            type: RandomNumberGenerator.GetInt32(8) switch
+                            {
+                                0 => AsteroidType.Stone,
+                                1 => AsteroidType.Stone,
+                                2 => AsteroidType.Stone,
+                                3 => AsteroidType.Copper,
+                                4 => AsteroidType.Copper,
+                                5 => AsteroidType.Gold,
+                                6 => AsteroidType.Grass,
+                                7 => AsteroidType.Amethyst,
+                                _ => throw new()
+                            },
+                            size: (1 << sector.Exponent) / 4f
+                        )
                     )
-                }
-            );
+                );
+            }
+            else
+            {
+                return new WorldChunk(
+                    sector,
+                    ImmutableArray.Create<WorldFeature>()
+                );
+            }
         }
     }
 }

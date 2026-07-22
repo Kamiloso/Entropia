@@ -31,8 +31,8 @@ public abstract partial class Instantiator : MonoBehaviour
         obj.transform.SetParent(transform, false);
         obj.transform.localRotation = rotation.ToQuaternion();
 
-        if (obj.TryGetComponent<ShiftTransform>(out var shiftTransform))
-            shiftTransform.Position = deltapos;
+        if (obj.TryGetComponent<Shift>(out var shift))
+            shift.Position = deltapos;
         else
             obj.transform.localPosition = deltapos.ToVector3();
 

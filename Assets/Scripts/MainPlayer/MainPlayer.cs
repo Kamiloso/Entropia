@@ -5,7 +5,7 @@ using UnityEngine;
 
 [UseComponent(typeof(PlayerInput))]
 [UseComponent(typeof(ShipMovement))]
-[UseComponent(typeof(ShiftTransform))]
+[UseComponent(typeof(Shift))]
 [DisallowMultipleComponent]
 public partial class MainPlayer : MonoBehaviour
 {
@@ -33,7 +33,7 @@ public partial class MainPlayer : MonoBehaviour
         {
             m_TeleportSubmit = false;
 
-            ShiftTransform.Position = new Vec3(
+            Shift.Position = new Vec3(
                 x: m_x,
                 y: m_y,
                 z: m_z

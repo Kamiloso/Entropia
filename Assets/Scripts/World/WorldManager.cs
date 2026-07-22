@@ -23,7 +23,7 @@ public partial class WorldManager : MonoBehaviour
 
     private void Update()
     {
-        SectorSpy.UpdatePosition(MainPlayer.ShiftTransform.Position);
+        SectorSpy.UpdatePosition(MainPlayer.Shift.Position);
     }
 
     private void LoadSector(Sector3 sector)

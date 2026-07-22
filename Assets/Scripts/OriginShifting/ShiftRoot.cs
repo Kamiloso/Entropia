@@ -1,10 +1,9 @@
 using Entropia.Core;
 using Entropia.Structs;
 using NoEntropy;
-using System;
 using UnityEngine;
 
-[UseComponent(typeof(ShiftTransform))]
+[UseComponent(typeof(Shift))]
 [DisallowMultipleComponent]
 public partial class ShiftRoot : MonoBehaviour
 {
@@ -29,11 +28,11 @@ public partial class ShiftRoot : MonoBehaviour
     {
         double rangeTolerance = 1L << m_SectorExponent;
 
-        if (Vec3.Distance(ShiftTransform.Position, Origin) > rangeTolerance)
+        if (Vec3.Distance(Shift.Position, Origin) > rangeTolerance)
         {
             Origin = new Sector3(
                 exponent: m_SectorExponent,
-                position: ShiftTransform.Position
+                position: Shift.Position
             ).Center();
         }
     }

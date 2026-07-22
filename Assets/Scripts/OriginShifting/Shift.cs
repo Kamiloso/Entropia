@@ -5,27 +5,27 @@ using UnityEngine;
 
 [Include(typeof(ShiftRoot))]
 [DisallowMultipleComponent]
-public partial class ShiftTransform : MonoBehaviour
+public partial class Shift : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     private Vec3 _buffer;
 
-    private Vector3 PositionInEngine
+    public Vec3 Position
+    {
+        get => ShiftRoot.Origin + EnginePosition.ToVec3();
+        set => EnginePosition = (value - ShiftRoot.Origin).ToVector3();
+    }
+
+    public Vector3 EnginePosition
     {
         get => _rigidbody != null ? _rigidbody.position : transform.position;
         set
         {
             if (_rigidbody != null)
                 _rigidbody.position = value;
-            else
-                transform.position = value;
-        }
-    }
 
-    public Vec3 Position
-    {
-        get => ShiftRoot.Origin + PositionInEngine.ToVec3();
-        set => PositionInEngine = (value - ShiftRoot.Origin).ToVector3();
+            transform.position = value;
+        }
     }
 
     partial void OnInitialize()
