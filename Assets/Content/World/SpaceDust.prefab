@@ -4846,7 +4846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974697132974441349}
   - component: {fileID: 7663836750409943563}
-  - component: {fileID: -6353907242851049011}
+  - component: {fileID: 5314312756774163229}
   m_Layer: 0
   m_Name: SpaceDust
   m_TagString: Untagged
@@ -4882,7 +4882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bb486964b7473458eb69f69fea006e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpaceDustMono
---- !u!114 &-6353907242851049011
+--- !u!114 &5314312756774163229
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4893,4 +4893,4 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11fa7385ce458204493632ebeb20f0c1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShiftTransform
+  m_EditorClassIdentifier: Assembly-CSharp::Shift

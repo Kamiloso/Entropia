@@ -23,49 +23,43 @@ public abstract partial class Instantiator : MonoBehaviour
         if (!m_Pool.TryGet(prefabName, out GameObject obj))
         {
             obj = ObjectResolver.Instantiate(m_Pool.Prefabs.GetByName(prefabName));
-            _prefabNames.Add(obj.GetEntityId(), prefabName);
         }
 
-        obj.name = hierarchyName ?? $"{prefabName}(Clone)";
+        _prefabNames.Add(obj.GetEntityId(), prefabName);
 
+        obj.name = hierarchyName ?? $"{prefabName}(Clone)";
         obj.transform.SetParent(transform, false);
-        obj.transform.localRotation = rotation.ToQuaternion();
 
         if (obj.TryGetComponent<Shift>(out var shift))
+        {
             shift.Position = deltapos;
+            shift.Rotation = rotation;
+        }
         else
-            obj.transform.localPosition = deltapos.ToVector3();
+        {
+            obj.transform.SetLocalPositionAndRotation(
+                localPosition: deltapos.ToVector3(),
+                localRotation: rotation.ToQuaternion()
+            );
+        }
 
         return obj;
     }
 
     protected void Despawn(GameObject obj)
     {
-        ThrowIfNotOwned(obj);
+        EntityId entityId = obj.GetEntityId();
 
-        string prefabName = PrefabNameOf(obj);
+        if (!_prefabNames.ContainsKey(entityId))
+            throw new InvalidOperationException("Provided object is not owned");
+
+        string prefabName = _prefabNames[entityId];
 
         if (!m_Pool.IsFull(prefabName))
-        {
             m_Pool.Add(prefabName, obj);
-        }
         else
-        {
-            _prefabNames.Remove(obj.GetEntityId());
             Destroy(obj);
-        }
-    }
 
-    protected string PrefabNameOf(GameObject obj)
-    {
-        ThrowIfNotOwned(obj);
-
-        return _prefabNames[obj.GetEntityId()];
-    }
-
-    protected void ThrowIfNotOwned(GameObject obj)
-    {
-        if (!_prefabNames.ContainsKey(obj.GetEntityId()))
-            throw new InvalidOperationException("Provided object is not owned");
+        _prefabNames.Remove(entityId);
     }
 }

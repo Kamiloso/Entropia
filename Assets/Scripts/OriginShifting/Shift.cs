@@ -10,12 +10,6 @@ public partial class Shift : MonoBehaviour
     private Rigidbody _rigidbody;
     private Vec3 _buffer;
 
-    public Vec3 Position
-    {
-        get => ShiftRoot.Origin + EnginePosition.ToVec3();
-        set => EnginePosition = (value - ShiftRoot.Origin).ToVector3();
-    }
-
     public Vector3 EnginePosition
     {
         get => _rigidbody != null ? _rigidbody.position : transform.position;
@@ -26,6 +20,30 @@ public partial class Shift : MonoBehaviour
 
             transform.position = value;
         }
+    }
+
+    public Quaternion EngineRotation
+    {
+        get => _rigidbody != null ? _rigidbody.rotation : transform.rotation;
+        set
+        {
+            if (_rigidbody != null)
+                _rigidbody.rotation = value;
+
+            transform.rotation = value;
+        }
+    }
+
+    public Vec3 Position
+    {
+        get => ShiftRoot.Origin + EnginePosition.ToVec3();
+        set => EnginePosition = (value - ShiftRoot.Origin).ToVector3();
+    }
+
+    public Rot3 Rotation
+    {
+        get => EngineRotation.ToRot3();
+        set => EngineRotation = value.ToQuaternion();
     }
 
     partial void OnInitialize()

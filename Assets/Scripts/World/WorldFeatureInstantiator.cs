@@ -17,7 +17,7 @@ public class WorldFeatureInstantiator : Instantiator
         if (components is not { Length: 1 })
             throw new InvalidOperationException(
                 $"Prefab \"{feature.PrefabName()}\" must have exactly " +
-                $"one component of type {nameof(WorldFeatureMono)}."
+                $"one component of type '{nameof(WorldFeatureMono)}'"
             );
 
         components[0].Initialize(feature);
