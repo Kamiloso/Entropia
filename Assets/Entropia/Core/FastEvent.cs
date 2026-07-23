@@ -13,7 +13,7 @@ public class FastEvent
     public void Subscribe(Action action)
     {
         if (_updating)
-            throw new ConcurrentAccessException(typeof(FastEvent));
+            throw new ConcurrentAccessException(nameof(FastEvent));
 
         if (_delegates.ContainsKey(action))
             _delegates[action]++;
@@ -24,7 +24,7 @@ public class FastEvent
     public void Unsubscribe(Action action)
     {
         if (_updating)
-            throw new ConcurrentAccessException(typeof(FastEvent));
+            throw new ConcurrentAccessException(nameof(FastEvent));
 
         if (!_delegates.TryGetValue(action, out int counter))
             throw new InvalidOperationException("Trying to unsubscribe a not subscribed delegate");
@@ -38,7 +38,7 @@ public class FastEvent
     public void Invoke()
     {
         if (_updating)
-            throw new ConcurrentAccessException(typeof(FastEvent));
+            throw new ConcurrentAccessException(nameof(FastEvent));
 
         _updating = true;
 

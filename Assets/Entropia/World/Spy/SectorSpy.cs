@@ -39,7 +39,7 @@ internal class SectorSpy : ISectorSpy
         if (_lastSectorIndex == sectorIndex) return;
 
         if (_updating)
-            throw new ConcurrentAccessException(typeof(SectorSpy));
+            throw new ConcurrentAccessException(nameof(SectorSpy));
 
         _updating = true;
 

@@ -7,8 +7,7 @@ namespace NoEntropy.Writers;
 internal readonly record struct MonoInfo(
     IReadOnlyList<string> NullCheckNames,
     IReadOnlyList<string> UseComponentTypes,
-    IReadOnlyList<string> UseDependencyTypes,
-    IReadOnlyList<string> UseUnitySingletonTypes
+    IReadOnlyList<string> UseDependencyTypes
 );
 
 internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoInfo MonoInfo)
@@ -24,7 +23,6 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
             {
                 {{PropertyDeclarations(MonoInfo.UseComponentTypes)}}
                 {{PropertyDeclarations(MonoInfo.UseDependencyTypes)}}
-                {{PropertyDeclarations(MonoInfo.UseUnitySingletonTypes)}}
                 
                 [Inject]
                 private void Construct_{{Hash}}({{DependencyArgs(MonoInfo.UseDependencyTypes)}})
@@ -32,7 +30,6 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
                     {{NullChecks(MonoInfo.NullCheckNames)}}
                     {{ComponentAssignments(MonoInfo.UseComponentTypes)}}
                     {{DependencyAssignments(MonoInfo.UseDependencyTypes)}}
-                    {{UnitySingletonAssignments(MonoInfo.UseUnitySingletonTypes)}}
 
                     OnInitialize();
                 }
@@ -104,13 +101,6 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
     {
         return string.Join("\n", types.Select(type => $"""
             {TypeToFieldName(type)} = {TypeToArgName(type)};
-            """));
-    }
-
-    private string UnitySingletonAssignments(IReadOnlyList<string> types)
-    {
-        return string.Join("\n", types.Select(type => $"""
-            {TypeToFieldName(type)} = UnitySingletons.Get<{type}>();
             """));
     }
 }

@@ -4,18 +4,15 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.Scripting;
 
-[Preserve]
-[DisallowMultipleComponent]
-public class CrashHandler : MonoBehaviour, INoExceptUnitySingleton
+public class CrashHandler
 {
     private static bool _isEditor;
     private static string _crashLogPath;
-
     private static int _crashed = 0;
 
-    private void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void EarlyInitialize()
     {
         try
         {

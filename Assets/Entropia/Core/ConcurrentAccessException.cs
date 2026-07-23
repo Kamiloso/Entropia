@@ -9,6 +9,6 @@ public class ConcurrentAccessException : Exception
     public ConcurrentAccessException()
         : base("Concurrent access is not allowed") { }
 
-    public ConcurrentAccessException(Type type)
-        : base($"Concurrent access to type '{type.Name}' is not allowed") { }
+    public ConcurrentAccessException(string objectName)
+        : base($"Concurrent access to '{objectName}' is not allowed") { }
 }
