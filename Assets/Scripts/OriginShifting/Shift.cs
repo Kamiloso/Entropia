@@ -1,10 +1,11 @@
 #pragma warning disable UNT0039
 
 using Entropia.Structs;
+using NoEntropy;
 using UnityEngine;
 
-[Include(typeof(ShiftRoot))]
 [DisallowMultipleComponent]
+[Resolve(typeof(ShiftRoot))]
 public partial class Shift : MonoBehaviour
 {
     private Rigidbody _rigidbody;
@@ -46,7 +47,7 @@ public partial class Shift : MonoBehaviour
         set => EngineRotation = value.ToQuaternion();
     }
 
-    partial void OnInitialize()
+    partial void OnConstruct()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }

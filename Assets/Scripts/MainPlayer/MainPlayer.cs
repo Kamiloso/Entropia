@@ -3,10 +3,10 @@ using NoEntropy;
 using System;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [UseComponent(typeof(PlayerInput))]
 [UseComponent(typeof(ShipMovement))]
 [UseComponent(typeof(Shift))]
-[DisallowMultipleComponent]
 public partial class MainPlayer : MonoBehaviour
 {
     public event Action OnRespawn;

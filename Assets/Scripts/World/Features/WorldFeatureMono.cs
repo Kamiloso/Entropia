@@ -1,18 +1,22 @@
+using Entropia.Core;
 using Entropia.World.Features;
 using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public abstract class WorldFeatureMono : MonoBehaviour
+public abstract class WorldFeatureMono : MonoBehaviour, IRecyclable<WorldFeature>
 {
-    public abstract void Initialize(WorldFeature worldFeature);
+    public virtual void Recycle(WorldFeature worldFeature) { }
+    public virtual void Abandon() { }
 }
 
-public abstract class WorldFeatureMono<T> : WorldFeatureMono where T : WorldFeature
+[DisallowMultipleComponent]
+public abstract class WorldFeatureMono<T> : WorldFeatureMono, IRecyclable<T>
+    where T : WorldFeature
 {
-    protected abstract void Initialize(T worldFeature);
+    public virtual void Recycle(T worldFeature) { }
 
-    public override void Initialize(WorldFeature worldFeature)
+    public override void Recycle(WorldFeature worldFeature)
     {
         if (!typeof(T).IsAssignableFrom(worldFeature.GetType()))
         {
@@ -21,6 +25,6 @@ public abstract class WorldFeatureMono<T> : WorldFeatureMono where T : WorldFeat
                 $"(expected {typeof(T)}, received {worldFeature.GetType()})");
         }
 
-        Initialize((T)worldFeature);
+        Recycle((T)worldFeature);
     }
 }

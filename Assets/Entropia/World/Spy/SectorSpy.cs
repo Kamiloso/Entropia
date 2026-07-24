@@ -33,27 +33,19 @@ internal class SectorSpy : ISectorSpy
 
     public void UpdatePosition(Vec3 position)
     {
+        if (_updating)
+            throw new ConcurrentAccessException(nameof(SectorSpy));
+
         Sector3 sector = new(Exponent, position);
         Vec3Int sectorIndex = sector.Index;
 
         if (_lastSectorIndex == sectorIndex) return;
-
-        if (_updating)
-            throw new ConcurrentAccessException(nameof(SectorSpy));
 
         _updating = true;
 
         try
         {
             Box3Int bounds = new(sectorIndex, Range);
-
-            foreach (Vec3Int pos in bounds)
-            {
-                if (_lastBounds?.Contains(pos) != true)
-                {
-                    OnLoad?.Invoke(new Sector3(Exponent, pos));
-                }
-            }
 
             if (_lastBounds.HasValue)
             {
@@ -63,6 +55,14 @@ internal class SectorSpy : ISectorSpy
                     {
                         OnUnload?.Invoke(new Sector3(Exponent, pos));
                     }
+                }
+            }
+
+            foreach (Vec3Int pos in bounds)
+            {
+                if (_lastBounds?.Contains(pos) != true)
+                {
+                    OnLoad?.Invoke(new Sector3(Exponent, pos));
                 }
             }
 

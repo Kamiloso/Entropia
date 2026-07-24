@@ -3,8 +3,8 @@ using Entropia.Structs;
 using NoEntropy;
 using UnityEngine;
 
-[UseComponent(typeof(Shift))]
 [DisallowMultipleComponent]
+[UseComponent(typeof(Shift))]
 public partial class ShiftRoot : MonoBehaviour
 {
     [SerializeField] private int m_SectorExponent;

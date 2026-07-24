@@ -299,6 +299,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282640837}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &301268816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 301268818}
+  - component: {fileID: 301268817}
+  m_Layer: 0
+  m_Name: Instance Pools
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &301268817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301268816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adc79e0af7387a34597c46125f950588, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InstancePoolProvider
+--- !u!4 &301268818
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301268816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1970278867}
+  - {fileID: 1170931913}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,7 +681,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 738283215}
-  - component: {fileID: 738283214}
+  - component: {fileID: 738283217}
   - component: {fileID: 738283216}
   m_Layer: 0
   m_Name: World
@@ -644,18 +690,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &738283214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738283213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 497c1e6f7facbb24189992eea5a7eac4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FeatureSpawning
 --- !u!4 &738283215
 Transform:
   m_ObjectHideFlags: 0
@@ -668,8 +702,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1320011938}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &738283216
@@ -681,10 +714,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 738283213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aafefa201432f1f45aa31bc59f0fbfad, type: 3}
+  m_Script: {fileID: 11500000, guid: 96da455b2a82aac4d979aa20041b8a85, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldFeatureInstantiator
-  m_Pool: {fileID: 1320011937}
+  m_EditorClassIdentifier: Assembly-CSharp::WorldChunkInstantiator
+  m_PoolName: World Chunks
+--- !u!114 &738283217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738283213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 286de72dea69c37459185757c044fca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldManager
 --- !u!1 &785995297
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,6 +993,52 @@ Transform:
   - {fileID: 1928515413}
   m_Father: {fileID: 1665952242}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &1170931912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1170931913}
+  - component: {fileID: 1170931914}
+  m_Layer: 0
+  m_Name: World Features
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1170931913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170931912}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 301268818}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1170931914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170931912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001c3023eaed9ab42b3d49579a6bc87f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InstancePool
+  m_Prefabs: {fileID: 11400000, guid: 7a1a3ae0ec2a6304dba1b9383e896224, type: 2}
+  m_LimitPerType: 1024
 --- !u!1 &1285356229
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,52 +1073,6 @@ Transform:
   - {fileID: 1491865773}
   m_Father: {fileID: 1665952242}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!1 &1320011936
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1320011938}
-  - component: {fileID: 1320011937}
-  m_Layer: 0
-  m_Name: World Feature Pool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1320011937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320011936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 001c3023eaed9ab42b3d49579a6bc87f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InstancePool
-  m_Prefabs: {fileID: 11400000, guid: 7a1a3ae0ec2a6304dba1b9383e896224, type: 2}
-  m_LimitPerType: 2000
---- !u!4 &1320011938
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320011936}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 738283215}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1345646174
 GameObject:
   m_ObjectHideFlags: 0
@@ -1457,9 +1502,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1496425716}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11fa7385ce458204493632ebeb20f0c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c28f64edf7335545887691235399ad8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShiftTransform
+  m_EditorClassIdentifier: Assembly-CSharp::ShiftRoot
+  m_SectorExponent: 12
 --- !u!114 &1496425724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1469,11 +1515,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1496425716}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c28f64edf7335545887691235399ad8, type: 3}
+  m_Script: {fileID: 11500000, guid: 11fa7385ce458204493632ebeb20f0c1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShiftRoot
-  m_SectorExponent: 12
-  m_RangeTolerance: 4096
+  m_EditorClassIdentifier: Assembly-CSharp::Shift
 --- !u!1 &1499995066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2048,6 +2092,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1951267466}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1970278866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1970278867}
+  - component: {fileID: 1970278868}
+  m_Layer: 0
+  m_Name: World Chunks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1970278867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970278866}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 301268818}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1970278868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970278866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001c3023eaed9ab42b3d49579a6bc87f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InstancePool
+  m_Prefabs: {fileID: 11400000, guid: 223ac630f5775fd4da1e69c03a08a24c, type: 2}
+  m_LimitPerType: 1024
 --- !u!1 &2007444734
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,3 +2238,4 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1496425719}
   - {fileID: 738283215}
+  - {fileID: 301268818}

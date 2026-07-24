@@ -1,7 +1,8 @@
+using NoEntropy;
 using UnityEngine;
 
-[Include(typeof(MainPlayer))]
 [DisallowMultipleComponent]
+[Resolve(typeof(MainPlayer))]
 public partial class CameraMovement : MonoBehaviour
 {
     [SerializeField] private Vector3 m_FollowOffset;
@@ -11,18 +12,27 @@ public partial class CameraMovement : MonoBehaviour
     private bool _alive = false;
     private bool _jump = false;
 
-    partial void OnInitialize()
+    partial void OnConstruct()
     {
-        MainPlayer.OnRespawn += () =>
-        {
-            _alive = true;
-            _jump = true;
-        };
+        MainPlayer.OnRespawn += OnRespawn;
+        MainPlayer.OnDeath += OnDeath;
+    }
 
-        MainPlayer.OnDeath += () =>
-        {
-            _alive = false;
-        };
+    private void OnDestroy()
+    {
+        MainPlayer.OnRespawn -= OnRespawn;
+        MainPlayer.OnDeath -= OnDeath;
+    }
+
+    private void OnRespawn()
+    {
+        _alive = true;
+        _jump = true;
+    }
+
+    private void OnDeath()
+    {
+        _alive = false;
     }
 
     private void LateUpdate()

@@ -1,4 +1,4 @@
-using Entropia.VContainers;
+using Entropia.Scenes;
 using VContainer;
 using VContainer.Unity;
 

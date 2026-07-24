@@ -66,7 +66,7 @@ public partial class Generator : IIncrementalGenerator
         }
 
         List<string> useComponentTypes = [];
-        List<string> useDependencyTypes = [];
+        List<string> resolveTypes = [];
 
         foreach (var attr in classSymbol.GetAttributes())
         {
@@ -86,11 +86,11 @@ public partial class Generator : IIncrementalGenerator
             if (attrName == MonoAttributes.UseComponent.LongName)
                 useComponentTypes.Add(typeStr);
 
-            if (attrName == MonoAttributes.UseDependency.LongName)
-                useDependencyTypes.Add(typeStr);
+            if (attrName == MonoAttributes.Resolve.LongName)
+                resolveTypes.Add(typeStr);
         }
 
-        if (nullCheckNames.Count + useComponentTypes.Count + useDependencyTypes.Count == 0)
+        if (nullCheckNames.Count + useComponentTypes.Count + resolveTypes.Count == 0)
         {
             return null;
         }
@@ -103,7 +103,7 @@ public partial class Generator : IIncrementalGenerator
         MonoInfo monoInfo = new(
             NullCheckNames: nullCheckNames,
             UseComponentTypes: useComponentTypes,
-            UseDependencyTypes: useDependencyTypes
+            ResolveTypes: resolveTypes
         );
 
         return new MonoBehaviourPartialWriter(nameStr, namespaceStr, monoInfo);

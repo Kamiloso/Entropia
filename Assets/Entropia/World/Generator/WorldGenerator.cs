@@ -3,93 +3,78 @@
 using Entropia.Core;
 using Entropia.Structs;
 using Entropia.World.Features;
+using System;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace Entropia.World.Generator;
 
+[MultiThreaded]
 internal interface IWorldGenerator
 {
     public long Seed { get; }
-
-    WorldChunk GetWorldChunk(Sector3 sector);
+    public WorldChunk GenerateChunk(Sector3 sector);
 }
 
+[MultiThreaded]
 internal class WorldGenerator : IWorldGenerator
 {
     public long Seed { get; }
 
-    private readonly CacheMap<Sector3, WorldChunk> _chunkCache;
-
     public WorldGenerator(long seed)
     {
         Seed = seed;
-
-        _chunkCache = new CacheMap<Sector3, WorldChunk>(maxSize: 1 << 8);
     }
 
-    public WorldChunk GetWorldChunk(Sector3 sector)
-    {
-        if (!_chunkCache.TryGet(sector, out WorldChunk worldChunk))
-        {
-            worldChunk = Task.Run(() => GenerateWorldChunk(sector)).Result; // TODO: Make it true async
-            _chunkCache.SetPair(sector, worldChunk);
-        }
-
-        return worldChunk;
-    }
-
-    // --- GENERATOR ---
-
-    [MultiThreaded]
-    private WorldChunk GenerateWorldChunk(Sector3 sector)
+    public WorldChunk GenerateChunk(Sector3 sector)
     {
         if (sector.Exponent == 4)
         {
             return new WorldChunk(
                 sector,
-                ImmutableArray.Create<WorldFeature>(
-                    new SpaceDust(
-                        position: sector.Center()
-                    )
-                )
+                ImmutableArray.Create<WorldFeature>(new SpaceDust(sector.Center()))
             );
         }
-        else
+
+        int sectorSeed = GetSectorSeed(Seed, sector);
+        Random rng = new(sectorSeed);
+
+        if (rng.Next(16) != 0)
         {
-            if (RandomNumberGenerator.GetInt32(16) == 0)
-            {
-                return new WorldChunk(
-                    sector,
-                    ImmutableArray.Create<WorldFeature>(
-                        new Asteroid(
-                            position: sector.Center(),
-                            rotation: Rot3.Zero,
-                            type: RandomNumberGenerator.GetInt32(8) switch
-                            {
-                                0 => AsteroidType.Stone,
-                                1 => AsteroidType.Stone,
-                                2 => AsteroidType.Stone,
-                                3 => AsteroidType.Copper,
-                                4 => AsteroidType.Copper,
-                                5 => AsteroidType.Gold,
-                                6 => AsteroidType.Grass,
-                                7 => AsteroidType.Amethyst,
-                                _ => throw new()
-                            },
-                            size: (1 << sector.Exponent) / 4f
-                        )
-                    )
-                );
-            }
-            else
-            {
-                return new WorldChunk(
-                    sector,
-                    ImmutableArray.Create<WorldFeature>()
-                );
-            }
+            return new WorldChunk(sector, ImmutableArray<WorldFeature>.Empty);
+        }
+
+        return new WorldChunk(
+            sector,
+            ImmutableArray.Create<WorldFeature>(
+                new Asteroid(
+                    position: sector.Center(),
+                    rotation: Rot3.Zero,
+                    size: (1 << sector.Exponent) / 4f,
+                    type: rng.Next(8) switch
+                    {
+                        < 3 => AsteroidType.Stone,
+                        < 5 => AsteroidType.Copper,
+                        5 => AsteroidType.Gold,
+                        6 => AsteroidType.Grass,
+                        7 => AsteroidType.Amethyst,
+                        _ => AsteroidType.Fallback
+                    }
+                )
+            )
+        );
+    }
+
+    private static int GetSectorSeed(long worldSeed, Sector3 sector)
+    {
+        unchecked
+        {
+            int hash = 17;
+            hash = hash * 31 + (int)worldSeed ^ (int)(worldSeed << 32);
+            hash = hash * 31 + sector.Exponent;
+            hash = hash * 31 + sector.Index.x;
+            hash = hash * 31 + sector.Index.y;
+            hash = hash * 31 + sector.Index.z;
+            return hash;
         }
     }
 }

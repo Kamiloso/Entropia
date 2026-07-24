@@ -2,7 +2,7 @@
 
 using VContainer;
 
-namespace Entropia.VContainers;
+namespace Entropia.Scenes;
 
 public static class RootRegistry
 {

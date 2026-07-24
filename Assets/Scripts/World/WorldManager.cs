@@ -1,45 +1,90 @@
+using Entropia.Scenes;
 using Entropia.Structs;
 using Entropia.World;
 using Entropia.World.Spy;
 using NoEntropy;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
-[Include(typeof(MainPlayer))]
-[Include(typeof(IWorldProvider))]
-[Include(typeof(ISectorSpy))]
-[UseComponent(typeof(WorldFeatureInstantiator))]
 [DisallowMultipleComponent]
+[Resolve(typeof(ShiftRoot))]
+[Resolve(typeof(IWorldProvider))]
+[Resolve(typeof(ISectorSpy))]
+[UseComponent(typeof(WorldChunkInstantiator))]
 public partial class WorldManager : MonoBehaviour
 {
-    private readonly Dictionary<Sector3, List<WorldFeatureMono>> _loadedSectors = new();
+    private readonly HashSet<Sector3> _loadedSectors = new();
+    private readonly HashSet<Sector3> _obtainingSectors = new();
+    private readonly Dictionary<Sector3, WorldChunkMono> _activeChunks = new();
 
-    partial void OnInitialize()
+    private readonly CancellationTokenSource _cts = new();
+
+    partial void OnConstruct()
     {
-        SectorSpy.OnLoad += LoadSector;
-        SectorSpy.OnUnload += UnloadSector;
+        SectorSpy.OnLoad += OnLoad;
+        SectorSpy.OnUnload += OnUnload;
+    }
+
+    private void OnDestroy()
+    {
+        SectorSpy.OnLoad -= OnLoad;
+        SectorSpy.OnUnload -= OnUnload;
+
+        _cts.Cancel();
+        _cts.Dispose();
     }
 
     private void Update()
     {
-        SectorSpy.UpdatePosition(MainPlayer.Shift.Position);
+        SectorSpy.UpdatePosition(ShiftRoot.Shift.Position);
     }
 
-    private void LoadSector(Sector3 sector)
+    private void OnLoad(Sector3 sector)
     {
-        WorldChunk worldChunk = WorldProvider.ObtainWorldChunk(sector);
-
-        List<WorldFeatureMono> instances = worldChunk.Features
-            .Select(f => WorldFeatureInstantiator.Spawn(f))
-            .ToList();
-
-        _loadedSectors.Add(sector, instances);
+        _loadedSectors.Add(sector);
+        if (!_obtainingSectors.Contains(sector))
+        {
+            StartCoroutine(ActivateChunkAsync(sector));
+        }
     }
 
-    private void UnloadSector(Sector3 sector)
+    private IEnumerator ActivateChunkAsync(Sector3 sector)
     {
-        _loadedSectors.Remove(sector, out List<WorldFeatureMono> instances);
-        instances.ForEach(WorldFeatureInstantiator.Despawn);
+        _obtainingSectors.Add(sector);
+
+        Task<WorldChunk> chunkLoading = WorldProvider.ObtainWorldChunk(sector, _cts.Token);
+        yield return new WaitUntil(() => chunkLoading.IsCompleted);
+
+        _obtainingSectors.Remove(sector);
+
+        try
+        {
+            WorldChunk chunk = chunkLoading.Result;
+
+            if (!_loadedSectors.Contains(sector))
+                yield break;
+
+            if (chunk.Features.Length == 0)
+                yield break;
+
+            _activeChunks.Add(sector, WorldChunkInstantiator.Spawn(chunk));
+        }
+        catch (ExitException)
+        {
+            // TODO: implement world exit scenario
+            Application.Quit();
+        }
+    }
+
+    private void OnUnload(Sector3 sector)
+    {
+        _loadedSectors.Remove(sector);
+        if (_activeChunks.Remove(sector, out WorldChunkMono instance))
+        {
+            WorldChunkInstantiator.Despawn(instance);
+        }
     }
 }

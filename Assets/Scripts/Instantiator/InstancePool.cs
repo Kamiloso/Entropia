@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class InstancePool : MonoBehaviour
 {
     [SerializeField] [NullCheck] private PrefabList m_Prefabs;
-    [SerializeField] private int m_LimitPerType;
+    [SerializeField] private int m_LimitPerType = 1024;
 
     private readonly Dictionary<string, Stack<GameObject>> _pool = new();
 

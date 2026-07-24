@@ -5,7 +5,7 @@ namespace Entropia.World.Features;
 
 public enum AsteroidType
 {
-    Unknown = 0,
+    Fallback = default,
     Stone = 1,
     Coal = 2,
     Copper = 3,
@@ -22,8 +22,8 @@ public sealed class Asteroid : WorldFeature
     public Asteroid(
         Vec3 position,
         Rot3 rotation,
-        AsteroidType type,
-        float size) : base(position, rotation)
+        float size,
+        AsteroidType type) : base(position, rotation)
     {
         if (!Enum.IsDefined(typeof(AsteroidType), type))
             throw new ArgumentOutOfRangeException(nameof(type));

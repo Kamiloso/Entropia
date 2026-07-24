@@ -5,7 +5,7 @@ using Entropia.World.Generator;
 using Entropia.World.Spy;
 using VContainer;
 
-namespace Entropia.VContainers;
+namespace Entropia.Scenes;
 
 public record GameConfig(
     long Seed

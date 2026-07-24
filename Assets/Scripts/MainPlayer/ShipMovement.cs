@@ -2,8 +2,8 @@ using System;
 using NoEntropy;
 using UnityEngine;
 
-[UseComponent(typeof(Rigidbody))]
 [DisallowMultipleComponent]
+[UseComponent(typeof(Rigidbody))]
 public partial class ShipMovement : MonoBehaviour
 {
     [Header("Thrust")]

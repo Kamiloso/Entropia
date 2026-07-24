@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 
 namespace Entropia.World;
 
-public readonly struct WorldChunk
+public class WorldChunk
 {
     public Sector3 Sector { get; }
     public ImmutableArray<WorldFeature> Features { get; }

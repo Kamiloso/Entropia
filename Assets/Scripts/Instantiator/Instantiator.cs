@@ -6,13 +6,20 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-[Include(typeof(IObjectResolver))]
 [DisallowMultipleComponent]
+[Resolve(typeof(IObjectResolver))]
+[Resolve(typeof(InstancePoolProvider))]
 public abstract partial class Instantiator : MonoBehaviour
 {
-    [SerializeField] [NullCheck] private InstancePool m_Pool;
+    [SerializeField] private string m_PoolName;
 
+    private InstancePool _pool;
     private readonly Dictionary<EntityId, string> _prefabNames = new();
+
+    partial void OnConstruct()
+    {
+        _pool = InstancePoolProvider.RequirePool(m_PoolName);
+    }
 
     protected GameObject Spawn(
         string prefabName,
@@ -20,14 +27,14 @@ public abstract partial class Instantiator : MonoBehaviour
         Rot3 rotation = default,
         string hierarchyName = null)
     {
-        if (!m_Pool.TryGet(prefabName, out GameObject obj))
+        if (!_pool.TryGet(prefabName, out GameObject obj))
         {
-            obj = ObjectResolver.Instantiate(m_Pool.Prefabs.GetByName(prefabName));
+            obj = ObjectResolver.Instantiate(_pool.Prefabs.GetByName(prefabName));
         }
 
         _prefabNames.Add(obj.GetEntityId(), prefabName);
 
-        obj.name = hierarchyName ?? $"{prefabName}(Clone)";
+        obj.name = hierarchyName ?? prefabName;
         obj.transform.SetParent(transform, false);
 
         if (obj.TryGetComponent<Shift>(out var shift))
@@ -55,8 +62,11 @@ public abstract partial class Instantiator : MonoBehaviour
 
         string prefabName = _prefabNames[entityId];
 
-        if (!m_Pool.IsFull(prefabName))
-            m_Pool.Add(prefabName, obj);
+        obj.transform.name = $"{prefabName}(Pooled)";
+        obj.transform.SetParent(_pool.transform, false);
+
+        if (!_pool.IsFull(prefabName))
+            _pool.Add(prefabName, obj);
         else
             Destroy(obj);
 

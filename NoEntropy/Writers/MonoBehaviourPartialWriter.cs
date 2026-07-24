@@ -7,7 +7,7 @@ namespace NoEntropy.Writers;
 internal readonly record struct MonoInfo(
     IReadOnlyList<string> NullCheckNames,
     IReadOnlyList<string> UseComponentTypes,
-    IReadOnlyList<string> UseDependencyTypes
+    IReadOnlyList<string> ResolveTypes
 );
 
 internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoInfo MonoInfo)
@@ -22,19 +22,19 @@ internal record MonoBehaviourPartialWriter(string Name, string Namespace, MonoIn
             partial class {{Name}}
             {
                 {{PropertyDeclarations(MonoInfo.UseComponentTypes)}}
-                {{PropertyDeclarations(MonoInfo.UseDependencyTypes)}}
+                {{PropertyDeclarations(MonoInfo.ResolveTypes)}}
                 
                 [Inject]
-                private void Construct_{{Hash}}({{DependencyArgs(MonoInfo.UseDependencyTypes)}})
+                private void Construct_{{Hash}}({{DependencyArgs(MonoInfo.ResolveTypes)}})
                 {
                     {{NullChecks(MonoInfo.NullCheckNames)}}
                     {{ComponentAssignments(MonoInfo.UseComponentTypes)}}
-                    {{DependencyAssignments(MonoInfo.UseDependencyTypes)}}
+                    {{DependencyAssignments(MonoInfo.ResolveTypes)}}
 
-                    OnInitialize();
+                    OnConstruct();
                 }
             
-                partial void OnInitialize();
+                partial void OnConstruct();
             }
             """;
 

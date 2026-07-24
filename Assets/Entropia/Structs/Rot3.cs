@@ -13,7 +13,7 @@ public readonly record struct Rot3(double x, double y, double z)
         string ys = y.ToString(CultureInfo.InvariantCulture);
         string zs = z.ToString(CultureInfo.InvariantCulture);
 
-        return $"({xs} deg, {ys} deg, {zs} deg)";
+        return $"({xs}°, {ys}°, {zs}°)";
     }
 
     public static readonly Rot3 Zero = new(0, 0, 0);
